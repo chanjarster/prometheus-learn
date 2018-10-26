@@ -1,0 +1,94 @@
+# severity按严重程度由高到低：red、orange、yello、blue
+groups:
+  - name: jvm-alerting
+    rules:
+
+    # down了超过30秒
+    - alert: instance-down
+      expr: up == 0
+      for: 30s
+      labels:
+        severity: yellow
+      annotations:
+        summary: "Instance {{ $labels.instance }} down"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 30 seconds."
+
+    # down了超过1分钟
+    - alert: instance-down
+      expr: up == 0
+      for: 1m
+      labels:
+        severity: orange
+      annotations:
+        summary: "Instance {{ $labels.instance }} down"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes."
+
+    # down了超过5分钟
+    - alert: instance-down
+      expr: up == 0
+      for: 5m
+      labels:
+        severity: blue
+      annotations:
+        summary: "Instance {{ $labels.instance }} down"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+
+    # 堆空间使用超过50%
+    - alert: heap-usage-too-much
+      expr: jvm_memory_bytes_used{job="java", area="heap"} / jvm_memory_bytes_max * 100 > 50
+      for: 1m
+      labels:
+        severity: yellow
+      annotations:
+        summary: "JVM Instance {{ $labels.instance }} memory usage > 50%"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been in status [heap usage > 50%] for more than 1 minutes. current usage ({{ $value }}%)"
+
+    # 堆空间使用超过80%
+    - alert: heap-usage-too-much
+      expr: jvm_memory_bytes_used{job="java", area="heap"} / jvm_memory_bytes_max * 100 > 80
+      for: 1m
+      labels:
+        severity: orange
+      annotations:
+        summary: "JVM Instance {{ $labels.instance }} memory usage > 80%"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been in status [heap usage > 80%] for more than 1 minutes. current usage ({{ $value }}%)"
+    
+    # 堆空间使用超过90%
+    - alert: heap-usage-too-much
+      expr: jvm_memory_bytes_used{job="java", area="heap"} / jvm_memory_bytes_max * 100 > 90
+      for: 1m
+      labels:
+        severity: red
+      annotations:
+        summary: "JVM Instance {{ $labels.instance }} memory usage > 90%"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been in status [heap usage > 90%] for more than 1 minutes. current usage ({{ $value }}%)"
+
+    # 在5分钟里，Old GC花费时间超过30%
+    - alert: old-gc-time-too-much
+      expr: increase(jvm_gc_collection_seconds_sum{gc="PS MarkSweep"}[5m]) > 5 * 60 * 0.3
+      for: 5m
+      labels:
+        severity: yellow
+      annotations:
+        summary: "JVM Instance {{ $labels.instance }} Old GC time > 30% running time"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been in status [Old GC time > 30% running time] for more than 5 minutes. current seconds ({{ $value }}%)"
+
+    # 在5分钟里，Old GC花费时间超过50%        
+    - alert: old-gc-time-too-much
+      expr: increase(jvm_gc_collection_seconds_sum{gc="PS MarkSweep"}[5m]) > 5 * 60 * 0.5
+      for: 5m
+      labels:
+        severity: orange
+      annotations:
+        summary: "JVM Instance {{ $labels.instance }} Old GC time > 50% running time"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been in status [Old GC time > 50% running time] for more than 5 minutes. current seconds ({{ $value }}%)"
+
+    # 在5分钟里，Old GC花费时间超过80%
+    - alert: old-gc-time-too-much
+      expr: increase(jvm_gc_collection_seconds_sum{gc="PS MarkSweep"}[5m]) > 5 * 60 * 0.8
+      for: 5m
+      labels:
+        severity: red
+      annotations:
+        summary: "JVM Instance {{ $labels.instance }} Old GC time > 80% running time"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been in status [Old GC time > 80% running time] for more than 5 minutes. current seconds ({{ $value }}%)"

@@ -22,7 +22,7 @@ function run-tomcats
   docker run -d \
     --name tomcat-1 \
     -v $(pwd):/jmx-exporter \
-    -e CATALINA_OPTS="-Xms64m -Xmx64m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/jmx-exporter-config.yml" \
+    -e CATALINA_OPTS="-Xms32m -Xmx32m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/jmx-exporter-config.yml" \
     -p 6060:6060 \
     -p 8080:8080 \
     tomcat:8.5-alpine
@@ -30,7 +30,7 @@ function run-tomcats
   docker run -d \
     --name tomcat-2 \
     -v $(pwd):/jmx-exporter \
-    -e CATALINA_OPTS="-Xms64m -Xmx64m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/jmx-exporter-config.yml" \
+    -e CATALINA_OPTS="-Xms32m -Xmx32m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/jmx-exporter-config.yml" \
     -p 6061:6060 \
     -p 8081:8080 \
     tomcat:8.5-alpine
@@ -38,11 +38,11 @@ function run-tomcats
   docker run -d \
     --name tomcat-3 \
     -v $(pwd):/jmx-exporter \
-    -e CATALINA_OPTS="-Xms64m -Xmx64m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/jmx-exporter-config.yml" \
+    -e CATALINA_OPTS="-Xms32m -Xmx32m -javaagent:/jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar=6060:/jmx-exporter/jmx-exporter-config.yml" \
     -p 6062:6060 \
     -p 8082:8080 \
     tomcat:8.5-alpine
-
+    
 }
 
 function run-grafana
@@ -57,14 +57,27 @@ function run-grafana
   
 }
 
+function run-alertmanager
+{
+  mkdir -p alertmanager-data
+
+  docker run -d \
+    --name=alertmanager \
+    -v $(pwd):/alertmanager-config \
+    -v $(pwd)/alertmanager-data:/etc/alertmanager/data \
+    -p 9093:9093 \
+    prom/alertmanager --config.file=/alertmanager-config/alertmanager-config.yml
+}
+
 function run
 {
   echo 'Run all containers'
 
   run-tomcats
+  run-alertmanager
   run-prom
   run-grafana
- 
+  
   echo ''
   echo 'Open browser: http://localhost:8080 for tomcat-1'
   echo 'Open browser: http://localhost:6060 for tomcat-1 metrics'
@@ -78,45 +91,51 @@ function run
   echo 'Open browser: http://localhost:9090 for Prometheus'
   echo ''
   echo 'Open browser: http://localhost:3000 for Grafana (default username/password: admin/admin)'
-   
+  echo ''
+  echo 'Open browser: http://localhost:9093 for Alertmanager'
+  
 }
 
 function start
 {
   echo 'Start all containers'
-  docker start prometheus grafana tomcat-1 tomcat-2 tomcat-3 
+  docker start prometheus grafana alertmanager tomcat-1 tomcat-2 tomcat-3 
 }
 
 function stop
 {
   echo 'Stop all containers'
-  docker stop prometheus grafana tomcat-1 tomcat-2 tomcat-3 
+  docker stop prometheus grafana alertmanager tomcat-1 tomcat-2 tomcat-3 
 }
 
 function restart
 {
   echo 'Restart all containers'
-  docker restart prometheus grafana tomcat-1 tomcat-2 tomcat-3 
+  docker restart prometheus grafana alertmanager tomcat-1 tomcat-2 tomcat-3 
 }
 
 function clear-data
 {
   echo "Clear all containers' data and restart"
-  rm -rf $(pwd)/prom-data/* $(pwd)/grafana-data/*
+  rm -rf $(pwd)/prom-data/* $(pwd)/grafana-data/* $(pwd)/alertmanager-data/*
 }
 
 function clear-container
 {
   echo 'Clear all containers'
   stop
-  docker rm prometheus grafana tomcat-1 tomcat-2 tomcat-3
+  docker rm prometheus grafana alertmanager tomcat-1 tomcat-2 tomcat-3
 }
 
 function reload-config
 {
   echo 'Reload Prometheus config'
   docker exec -t prometheus kill -SIGHUP 1
+  
+  echo 'Reload Alertmanager config'
+  docker exec -t alertmanager kill -SIGHUP 1
 }
+
 
 function usage
 {
