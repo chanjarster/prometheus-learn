@@ -1,3 +1,5 @@
+对应文章：https://chanjarster.github.io/post/prom-alert-jvm/
+
 复制`alertmanager-config.default.yml`文件到文件名`alertmanager-config.yml`。设置smtp相关配置，以及下面`user-a`的邮箱。
 
 **邮箱发送失败问题**
