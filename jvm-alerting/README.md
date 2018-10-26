@@ -1,3 +1,9 @@
+复制`alertmanager-config.default.yml`文件到文件名`alertmanager-config.yml`。设置smtp相关配置，以及下面`user-a`的邮箱。
+
+**邮箱发送失败问题**
+
+中国的企业/个人邮箱几乎都不支持TLS（见这个[issue][issue]），因此请用gmail邮箱。
+
 ```bash
 # docker run所有容器
 ./demo.sh run
@@ -17,3 +23,5 @@
 # docker rm所有容器
 ./demo.sh clear-container
 ```
+
+[issue]: https://github.com/prometheus/alertmanager/issues/980#issuecomment-328088587
