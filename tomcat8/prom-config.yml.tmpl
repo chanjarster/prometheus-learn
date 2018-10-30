@@ -1,0 +1,21 @@
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets:
+      - 'localhost:9090'
+
+  - job_name: 'java'
+    static_configs:
+    - targets: 
+      - '$HOSTNAME:6060'
+      - '$HOSTNAME:6061'
+      - '$HOSTNAME:6062'
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - '$HOSTNAME:9093'
+
+rule_files:
+  - '/prometheus-config/prom-alert-rules.yml'

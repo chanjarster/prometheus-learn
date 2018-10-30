@@ -1,0 +1,64 @@
+# severity按严重程度由高到低：red、orange、yello、blue
+groups:
+  - name: jvm-alerting
+    rules:
+
+    # error count超过request count的 > 30%
+    - alert: error-too-much
+      expr: idelta(tomcat_servlet_errorcount_total[2m]) / idelta(tomcat_servlet_requestcount_total[2m]) > 0.3
+      for: 5m
+      labels:
+        severity: yellow
+      annotations:
+        summary: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] error over 30%"
+        description: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] of job {{ $labels.job }} has been in status [error / request > 30%] for more than 5 minutes."
+
+    # error count超过request count的 > 50%
+    - alert: error-too-much
+      expr: idelta(tomcat_servlet_errorcount_total[2m]) / idelta(tomcat_servlet_requestcount_total[2m]) > 0.5
+      for: 5m
+      labels:
+        severity: orange
+      annotations:
+        summary: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] error over 50%"
+        description: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] of job {{ $labels.job }} has been in status [error / request > 50%] for more than 5 minutes."
+
+    # error count超过request count的 > 80%
+    - alert: error-too-much
+      expr: idelta(tomcat_servlet_errorcount_total[2m]) / idelta(tomcat_servlet_requestcount_total[2m]) > 0.8
+      for: 5m
+      labels:
+        severity: red
+      annotations:
+        summary: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] error over 80%"
+        description: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] of job {{ $labels.job }} has been in status [error / request > 80%] for more than 5 minutes."
+    
+    # 平均处理请求时间超过 3s
+    - alert: processing-time-too-slow
+      expr: idelta(tomcat_servlet_processingtime_total[2m]) / idelta(tomcat_servlet_requestcount_total[2m]) > 3 * 1000
+      for: 5m
+      labels:
+        severity: yellow
+      annotations:
+        summary: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] processing time over 3 seconds"
+        description: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] of job {{ $labels.job }} has been in status [avg processing time > 3 seconds] for more than 5 minutes. Current value ({{ $value }})"
+      
+    # 平均处理请求时间超过 5s
+    - alert: processing-time-too-slow
+      expr: idelta(tomcat_servlet_processingtime_total[2m]) / idelta(tomcat_servlet_requestcount_total[2m]) > 5 * 1000
+      for: 5m
+      labels:
+        severity: orange
+      annotations:
+        summary: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] processing time over 5 seconds"
+        description: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] of job {{ $labels.job }} has been in status [avg processing time > 5 seconds] for more than 5 minutes. Current value ({{ $value }})"
+      
+    # 平均处理请求时间超过 10s
+    - alert: processing-time-too-slow
+      expr: idelta(tomcat_servlet_processingtime_total[2m]) / idelta(tomcat_servlet_requestcount_total[2m]) > 10 * 1000
+      for: 5m
+      labels:
+        severity: red
+      annotations:
+        summary: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] processing time over 10 seconds"
+        description: "Tomcat [{{ $labels.instance }}] Module [{{ $labels.module }}] Servlet [{{ $labels.servlet }}] of job {{ $labels.job }} has been in status [avg processing time > 10 seconds] for more than 5 minutes. Current value ({{ $value }})"
