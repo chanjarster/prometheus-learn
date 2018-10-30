@@ -1,4 +1,12 @@
-对应文章：https://chanjarster.github.io/post/prom-alert-jvm/
+# Prometheus + Alertmanager告警JVM异常情况
+
+* 对应文章: https://chanjarster.github.io/post/prom-alert-jvm/
+* jmx-exporter config: [jmx-exporter-config.yml](jmx-exporter-config.yml)
+* Prometheus rules: [prom-alert-rules.yml](prom-alert-rules.yml)
+* Alertmanager config: [alertmanager-config.yml](alertmanager-config.default.yml)
+* Grafana dashboard: [JVM dashboard](https://grafana.com/dashboards/8563)
+
+用法：
 
 复制`alertmanager-config.default.yml`文件到文件名`alertmanager-config.yml`。设置smtp相关配置，以及下面`user-a`的邮箱。
 

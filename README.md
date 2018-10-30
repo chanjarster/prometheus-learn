@@ -3,4 +3,5 @@
 学习Prometheus
 
 * [监控JVM的例子](jvm-monitoring)
-* [JVM预警的例子](jvm-alerting)
+* [JVM告警警的例子](jvm-alerting)
+* [监控Tomcat的例子](tomcat8)

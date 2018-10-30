@@ -1,8 +1,14 @@
-对应文章：https://chanjarster.github.io/post/prom-alert-jvm/
+# Prometheus + Alertmanager告警Tomcat异常情况
+
+* 对应文章: 
+* jmx-exporter config: [jmx-exporter-config.yml](jmx-exporter-config.yml)
+* Prometheus rules: [prom-alert-rules.yml](prom-alert-rules.yml)
+* Alertmanager config: [alertmanager-config.yml](alertmanager-config.default.yml)
+* Grafana dashboard: [Tomcat dashboard](https://grafana.com/dashboards/8704)
+
+用法：
 
 复制`alertmanager-config.default.yml`文件到文件名`alertmanager-config.yml`。设置smtp相关配置，以及下面`user-a`的邮箱。
-
-[Grafana dashboard](https://grafana.com/dashboards/8704)
 
 **邮箱发送失败问题**
 
