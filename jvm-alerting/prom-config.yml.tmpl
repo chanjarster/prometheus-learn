@@ -5,6 +5,7 @@ scrape_configs:
       - 'localhost:9090'
 
   - job_name: 'java'
+    scrape_interval: 30s
     static_configs:
     - targets: 
       - '$HOSTNAME:6060'

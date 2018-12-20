@@ -4,6 +4,8 @@ COMMAND=$1
 
 function run-prom
 {
+  docker pull prom/prometheus
+  
   mkdir -p prom-data
 
   HOSTNAME=$(hostname) envsubst < prom-config.yml.tmpl > prom-config.yml
@@ -19,6 +21,8 @@ function run-prom
 
 function run-tomcats
 {
+  docker pull tomcat:8.5-alpine
+  
   docker run -d \
     --name tomcat-1 \
     -v $(pwd):/jmx-exporter \
@@ -48,6 +52,8 @@ function run-tomcats
 
 function run-grafana
 {
+  docker pull grafana/grafana
+  
   mkdir -p grafana-data
 
   docker run -d \
@@ -60,6 +66,8 @@ function run-grafana
 
 function run-alertmanager
 {
+  docker pull prom/alertmanager
+  
   mkdir -p alertmanager-data
 
   docker run -d \
