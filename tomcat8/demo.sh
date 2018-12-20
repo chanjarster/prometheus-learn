@@ -66,7 +66,7 @@ function run-grafana
 
 function run-alertmanager
 {
-  docker pull prom/alertmanager
+  docker pull prom/alertmanager:master
   
   mkdir -p alertmanager-data
 
@@ -75,7 +75,7 @@ function run-alertmanager
     -v $(pwd):/alertmanager-config \
     -v $(pwd)/alertmanager-data:/etc/alertmanager/data \
     -p 9093:9093 \
-    prom/alertmanager --config.file=/alertmanager-config/alertmanager-config.yml
+    prom/alertmanager:master --config.file=/alertmanager-config/alertmanager-config.yml
 }
 
 function run
