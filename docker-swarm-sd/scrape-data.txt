@@ -1,0 +1,15 @@
+# HELP x mock metric
+# TYPE x gauge
+x 1
+---
+# HELP x mock metric
+# TYPE x gauge
+x 2
+---
+# HELP x mock metric
+# TYPE x gauge
+x 3
+---
+# HELP x mock metric
+# TYPE x gauge
+x 4

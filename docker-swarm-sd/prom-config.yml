@@ -1,0 +1,12 @@
+scrape_configs:
+  - job_name: 'swarm-service'
+    scrape_interval: 30s
+    dns_sd_configs:
+      - names:
+        - tasks.mock
+        - standalone-mock
+        type: A
+        port: 8080
+    relabel_configs:
+      - source_labels: ['__meta_dns_name']
+        target_label: 'service'

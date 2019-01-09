@@ -1,6 +1,6 @@
 # Prometheus + Alertmanager告警Tomcat异常情况
 
-* 对应文章: 
+* 对应文章: 无
 * jmx-exporter config: [jmx-exporter-config.yml](jmx-exporter-config.yml)
 * Prometheus rules: [prom-alert-rules.yml](prom-alert-rules.yml)
 * Alertmanager config: [alertmanager-config.yml](alertmanager-config.default.yml)
