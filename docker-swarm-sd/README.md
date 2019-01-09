@@ -1,6 +1,6 @@
 # 监控Docker swarm overlay网络中的container
 
-* 对应文章: 
+* 对应文章: [Prometehus监控Docker Swarm Overlay网络中的容器](https://chanjarster.github.io/post/p8s-scrape-container-in-docker-swarm-overlay-network/)
 * Prometheus rules: None
 * Alertmanager config: None
 
