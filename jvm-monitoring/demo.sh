@@ -2,8 +2,8 @@
 CMD_NAME=`basename $0`
 COMMAND=$1
 
-yum install -y ntp
-ntpdate time4.aliyun.com 
+# yum install -y ntp
+# ntpdate time4.aliyun.com 
 
 function run-prom
 {
