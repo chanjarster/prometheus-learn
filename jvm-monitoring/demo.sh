@@ -2,11 +2,14 @@
 CMD_NAME=`basename $0`
 COMMAND=$1
 
+yum install -y ntp
+ntpdate time4.aliyun.com 
+
 function run-prom
 {
   docker pull prom/prometheus
   
-  mkdir -p prom-data
+  mkdir -p prom-data && chmod 777 -R prom-data
 
   HOSTNAME=$(hostname) envsubst < prom-config.yml.tmpl > prom-config.yml
 
@@ -53,7 +56,7 @@ function run-grafana
 {
   docker pull grafana/grafana
   
-  mkdir -p grafana-data
+  mkdir -p grafana-data && chmod 777 -R grafana-data
 
   docker run -d \
     --name=grafana \
